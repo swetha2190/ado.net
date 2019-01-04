@@ -3,30 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
 
-using System.Runtime.InteropServices;
-
-
-
-namespace ATTRIBUTEproject
+namespace DATABASEPROJECT
 {
     class Program
     {
-
-        [DllImport("kernel32.dll")]
-        public static extern bool Beep(int freq, int duration);
-
-        public static void TestBeeps()
-        {
-            Beep(6000, 1600); //low frequency, longer sound
-            Beep(6000, 4000); //high frequency, short sound
-        }
-
         static void Main(string[] args)
         {
-            Program p = new Program();
-            TestBeeps();
-        }
+            SqlConnection con = new SqlConnection();
+            //con.ConnectionString = "Server = WKSBAN24KAN0008\\SQLEXPRESS ;Database = MyDB;Integrated Security = true";
+            con.ConnectionString = "Data Source=WKSBAN24KAN0008\\SQLEXPRESS;Initial Catalog=MyDB;Integrated Security=True";
+            con.Open();
 
+            string query = "select * from Employee";
+
+            SqlCommand cmd = new SqlCommand(query,con);
+
+            
+
+            SqlDataReader sdr = cmd.ExecuteReader();
+
+            while(sdr.Read())
+            {
+                Console.WriteLine("{0} {1} {2} {3}",sdr[0],sdr[1],sdr[2],sdr[3]);
+            }
+            Console.ReadLine();
+        }
     }
 }
+
+
+
